@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
-
+import Nav from './components/nav'
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import SteamSearch from './screens/steam-search'
+import SteamDetails from './screens/steam-details.js'
+import LandingPage from './screens/landing-page.js'
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="container">
+        <BrowserRouter>
+          <div className="row">
+            <div className="col-2">
+              <Nav/>
+            </div>
+            <div className="col-10">
+              <Routes>
+                  <Route path="/" element={<LandingPage/>}/>
+                <Route path="/search" element={<SteamSearch/>}/>
+                <Route path="/details" element={<SteamDetails/>}/>
+              </Routes>
+            </div>
+          </div>
+        </BrowserRouter>
+      </div>
   );
 }
 
