@@ -1,6 +1,6 @@
 import axios from 'axios';
 const STEAM_API = 'http://localhost:4000/api/steam';
-const USERS = [];
+
 
 export const findUser = async (userId) => {
     const response = await axios.get(STEAM_API);
@@ -12,7 +12,6 @@ export const getOwnedGames = async (userId) => {
     const url = STEAM_API + "/getOwnedGames/" + userId;
     const response = await axios.get(url);
     const data = response.data;
-    console.log(data);
     return data;
 }
 

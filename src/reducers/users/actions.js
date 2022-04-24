@@ -1,3 +1,4 @@
-export const ADD_USER = "ADD_USER";
-export const DELETE_USER = "DELETE_USER";
-export const UPDATE_USER = "UPDATE_USER";
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
+export const UPDATE_USER_DATA = "UPDATE_USER_DATA";
+export const UPDATE_STEAM_DATA = "UPDATE_STEAM_DATA";

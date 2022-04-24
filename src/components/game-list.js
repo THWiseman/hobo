@@ -27,7 +27,7 @@ const GameList = (props) => {
     return (
         <div>
             <ul>
-                {gamesList.map(g => <li key={g.appid}> <Game gameObj={g}/></li>)}
+                {gamesList.map(g => <li key={g.appid}> <Game appId={g.appId}/></li>)}
             </ul>
         </div>
             );

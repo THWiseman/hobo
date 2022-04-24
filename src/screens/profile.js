@@ -1,30 +1,32 @@
-import React, {useEffect} from "react";
-import GameList from "../components/game-list"
-import {useParams} from "react-router-dom";
-import {getUserBySteamId, searchGamesByTitle} from "../services/steam-service";
+import React, {useEffect,useState,useRef} from "react";
+import {Link, useParams} from "react-router-dom";
+import {useSelector} from 'react-redux'
+import {useNavigate} from "react-router-dom";
 
 const Profile = () => {
-    //URL Parameters
-    const params = useParams();
 
-    //Fetch data from server
-    const [userData, setUserData] = React.useState({"steam":{"players":[{"steamid":"","communityvisibilitystate":3,"profilestate":1,"personaname":"","commentpermission":1,"profileurl":"","avatar":"","avatarmedium":"","avatarfull":"","avatarhash":"","lastlogoff":1650660946,"personastate":3,"realname":"","primaryclanid":"","timecreated":1209901089,"personastateflags":0}]},
-        "db":{"UserType":"User","Followers":[],"CreatedCollections":[],"UserName":"hi","SteamId":0,"FollowedCurators":[],"SavedCollections":[],"PersonalInfo":{"_id":"","Name":"","Age":28,"Address":"","Password":""},"RecommendedApps":[],"OwnedApps":[]}}
-    );
+    const user_data = useSelector(state => {
+        return state.user_data
+    });
 
+    const loggedIn = useSelector(state => {
+        return state.loggedIn;
+    })
 
-    useEffect( () => {
-        const fetchUserData = async () => {
-            const data = await getUserBySteamId(params.steamId);
-            setUserData(data);
+    //redirect user to sign in page if they're not logged in.
+    const navigate = useNavigate();
+    useEffect(() => {
+        console.log(user_data);
+        if(!loggedIn){
+            navigate("/signin");
         }
-        fetchUserData().catch(console.error);
-    },[])
+    })
 
+    return(
 
-    return(<div>
-        <h1>{userData.db.UserName}</h1>
-        <GameList userId={params.steamId}/>
+        <div>
+        <h1>{user_data.UserName}</h1>
+        <Link className={"btn btn-danger"} to="/signin">Logout</Link>
     </div>)
 }
 export default Profile;

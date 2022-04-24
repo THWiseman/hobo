@@ -1,40 +1,38 @@
-import {ADD_USER} from './actions'
-import {UPDATE_USER} from './actions'
-import {DELETE_USER} from './actions'
+import {LOGIN,LOGOUT,UPDATE_USER_DATA,UPDATE_STEAM_DATA} from './actions'
 
-
-const defaultUser = {
-    _id : 0,
-    userName: "Hobo Hero",
-    steamId: 76561197978497049,
-    following: [],
-    followers: [],
-    recommendedGames: [],
-}
-
-const initialUserState = {
-    numUsers : 0,
-    users: [defaultUser],
+const initialState = {
+    loggedIn : false,
+    user_data: {},
+    steam_data: {}
 };
 
-const userReducer = (state = initialUserState, action) => {
+const userReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ADD_USER:
+        case LOGIN:
+            console.log("login from reducer");
             return {
                 ...state,
-                users: [
-                    ...state.users, action.user ]
+                loggedIn: true,
+                user_data: action.user_data
             }
-        case UPDATE_USER:
+        case LOGOUT:
             return {
                 ...state,
-                users: state.users.map(u => u._id === action.user._id ? action.user : u)
+                loggedIn: false,
+                user_data: {},
+                steam_data: {}
             }
-        case DELETE_USER:
+        case UPDATE_USER_DATA:
             return {
                 ...state,
-                users: state.users.filter(u => u._id != action.user._id)
+                user_data : action.user_data
             }
+        case UPDATE_STEAM_DATA:
+            return {
+                ...state,
+                steam_data : action.steam_data
+            }
+
         default:
             return state;
     }

@@ -1,16 +1,15 @@
 const Game = (props) => {
-    const gameObj = props.gameObj
-    const title = gameObj.name;
-    const appId = gameObj.appid;
-    const imgIconUrl = gameObj.img_icon_url + ".jpg"
-    const imgURL = "http://media.steampowered.com/steamcommunity/public/images/apps/" + appId + "/" + imgIconUrl;
+    const appId = props.appId;
+    //const imgURL = "http://media.steampowered.com/steamcommunity/public/images/apps/" + appId + "/" + imgIconUrl;
+    const bannerURL = "https://steamcdn-a.akamaihd.net/steam/apps/" + appId + "/header.jpg";
+
     return (
         <div className={"container"}>
             <div className={"row"}>
-                <div className={"col-1"}>
-            <img src={imgURL}/>
+                <div className={"col-3"}>
+            <img src={bannerURL}/>
                 </div>
-                <div className={"col-10 my-auto"}><h4>{title}</h4></div>
+                <div className={"col-9 my-auto"}><h4>{"HI"}</h4></div>
             </div>
         </div>
     );
