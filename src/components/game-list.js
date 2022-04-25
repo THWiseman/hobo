@@ -1,33 +1,18 @@
 import Game from '../components/game.js'
-import {getOwnedGames} from "../services/steam-service.js"
-import React, {useEffect} from 'react'
+import React from 'react'
 
 const GameList = (props) => {
-    const userId = props.userId;
-    const [gamesList, setGamesList] = React.useState([]);
+    const gamesArray = props.gamesArray;
 
-    useEffect(() => {
-        const fetchGamesList = async () => {
-            const list = await getOwnedGames(userId);
-            console.log(list);
-            setGamesList(list);
-        }
-        fetchGamesList().catch(console.error);
-    },[])
-
-
-    if(!gamesList){
-        return (
-            <div>
-                Make your Steam Profile Public if you want to see owned games!
-            </div>
-        )
+    if(!gamesArray){
+        return (<div>
+        </div>)
     }
 
     return (
         <div>
             <ul>
-                {gamesList.map(g => <li key={g.appid}> <Game appId={g.appId}/></li>)}
+                {gamesArray.map(g => <li className={"list-group-item"} key={g}> <Game appId={g}/></li>)}
             </ul>
         </div>
             );

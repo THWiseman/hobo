@@ -19,10 +19,16 @@ export const logout = async (user) => {
 }
 
 export const getUserById = async (id) => {
-    const respone = await (api.get(API_URL+'/getUser/' + id));
+    const axiosResponse = await (api.get(API_URL+'/getUser/' + id));
+    return axiosResponse;
 }
 
 export const profile = async () => {
     const response = await api.post(API_URL + '/profile');
     return response.data
+}
+
+export const getAllCurators = async () => {
+    const response = await (api.get(API_URL + '/curators'));
+    return response.data;
 }

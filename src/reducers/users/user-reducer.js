@@ -32,7 +32,6 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 steam_data : action.steam_data
             }
-
         default:
             return state;
     }

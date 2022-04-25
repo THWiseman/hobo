@@ -1,23 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
-import {searchGamesByTitle} from '../services/steam-service'
+import GameList from '../components/game-list.js'
+import * as service from "../services/steam-service";
 
 const SteamSearch = () => {
     //URL Parameters
     const params = useParams();
-
-    //Getting a list of app IDs from the URL
-    const [gamesList, setGamesList] = React.useState([]);
-    const fetchGamesList = async () => {
-        const list = await searchGamesByTitle(params.query);
-        setGamesList(list);
-    }
-    if(params.query){
-        fetchGamesList();
-        console.log(gamesList);
-    }else {
-        console.log("no params");
-    }
 
     //Set state of input box to 'search'. Navigate to 'search/:search when button is pressed
     const navigate = useNavigate();
@@ -31,22 +19,39 @@ const SteamSearch = () => {
         navigate("/search/" + search);
     }
 
-    return(
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="header-search">
-                    <span className="visually-hidden">Half-Life 2</span>
-                </label>
-                <input
-                    type="text"
-                    id="header-search"
-                    placeholder="Half-Life 2"
-                    value = {search}
-                    onChange = {handleChange}
-                    name="s"
-                />
-                <button className ={"btn-warning"} type={"submit"}>Search</button>
-            </form>
-    </div>);
+    //Getting a list of app IDs from the URL
+    const [gamesList, setGamesList] = React.useState([]);
+    useEffect( () => {
+        const fetchGamesList = async () => {
+            const responseFromServer = await(service.searchGamesByTitle(params.query));
+            setGamesList(responseFromServer.map(g=>parseInt(g.appid)));
+        }
+        if(params.query){
+            fetchGamesList();
+        }
+
+    },[params.query])
+
+    //If there is no query in the URL, return the search box
+    if(!params.query){
+        return(
+            <div>
+                <div className="input-group col-3">
+                    <input value={search} onChange={handleChange} type="search" className="form-control rounded" placeholder="Search for Games" aria-label="Search"
+                           aria-describedby="search-addon"/>
+                    <button  onClick={handleSubmit} type="button" className="btn btn-outline-primary">Search</button>
+                </div>
+            </div>);
+    } else{
+        return (<div>
+            <div className="input-group">
+                <input value={search} onChange={handleChange} type="search" className="form-control rounded" placeholder="Search for Games" aria-label="Search"
+                       aria-describedby="search-addon"/>
+                <button  onClick={handleSubmit} type="button" className="btn btn-outline-primary">Search</button>
+            </div>
+            <h2>Search Results for: {search || params.query}</h2>
+            <GameList gamesArray={gamesList}/>
+        </div>)
+    }
 }
 export default SteamSearch;
