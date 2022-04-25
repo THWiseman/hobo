@@ -2,6 +2,8 @@ import React, {useState,useEffect} from 'react'
 import * as service from '../services/steam-service.js'
 import {useSelector,useDispatch} from 'react-redux'
 import {UPDATE_USER_DATA} from "../reducers/users/actions";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Game = (props) => {
     const appId = props.appId;
@@ -12,7 +14,7 @@ const Game = (props) => {
     const[appInfo, setAppInfo] = useState();
 
     const user_data = useSelector((state) => {
-        return state.user_data
+        return state;
     });
 
     const[userRecommendsApp,setUserRecommendsApp] = useState(false);
@@ -34,6 +36,25 @@ const Game = (props) => {
         setUserRecommendsApp(user_data.RecommendedApps.includes(appId));
     },[user_data])
 
+    const handleSelect=(e)=>{
+        console.log(e);
+    }
+
+    const addToCollection = () => {
+
+        return(
+            <DropdownButton
+            title="Add To Collection"
+            id="dropdown-menu-align-right"
+            onSelect={handleSelect}
+            size={"sm"}
+            variant={"info"}
+        >
+            <Dropdown.Item eventKey="option-1">option-1</Dropdown.Item>
+            <Dropdown.Item eventKey="option-2">option-2</Dropdown.Item>
+            <Dropdown.Item eventKey="option-3">option 3</Dropdown.Item>
+        </DropdownButton>)
+    }
 
 
     return (
@@ -49,13 +70,12 @@ const Game = (props) => {
             <button className={"btn btn-primary btn-sm"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
                 </div>
                 <div className={"col-4"}>
-                    <button className={"btn btn-primary btn-sm"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
-                </div>
+                    {addToCollection()}
+                    </div>
                 <div className={"col-4"}>
                     <button className={"btn btn-primary btn-sm"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
                 </div>
             </div>
-
         </div>
     );
 }

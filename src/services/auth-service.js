@@ -32,3 +32,13 @@ export const getAllCurators = async () => {
     const response = await (api.get(API_URL + '/curators'));
     return response.data;
 }
+
+export const getCollectionsForUser = async (userId) => {
+    const response = await (api.get(API_URL + '/collections' + userId));
+    return response.data;
+}
+
+export const getAllCollections = async () => {
+    const response = await (api.get(API_URL + '/collections'));
+    return response.data;
+}

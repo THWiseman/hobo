@@ -8,6 +8,7 @@ import Profile from './screens/profile'
 import Curators from './screens/curators'
 import Signup from './screens/signup'
 import Signin from './screens/signin'
+import BrowseCollections from './screens/browse-collections'
 import GameDetails from'./components/game-details'
 import userReducer from "./reducers/users/user-reducer.js";
 import {Provider} from "react-redux";
@@ -28,6 +29,7 @@ function App() {
             <div className="col-10 pt-4">
               <Routes>
                   <Route path="/" element={<LandingPage/>}/>
+                  <Route path={"/collections"} element={<BrowseCollections/>}/>
                   <Route path={"/gameDetails/:appId"} element={<GameDetails/>}/>
                   <Route path={"/signin"} element={<Signin/>}/>
                   <Route path={"/signup"} element={<Signup/>}/>

@@ -1,9 +1,24 @@
-import {LOGIN,LOGOUT,UPDATE_USER_DATA,UPDATE_STEAM_DATA} from './actions'
+import {LOGIN,LOGOUT,UPDATE_USER_DATA} from './actions'
 
 const initialState = {
     loggedIn : false,
-    user_data: {},
-    steam_data: {}
+    _id: "",
+    UserName : "",
+    SteamId : 0,
+    UserType : "Curator",
+    FollowedCurators : [],
+    Followers : [],
+    CreatedCollections : [],
+    SavedCollections : [],
+    PersonalInfo : {
+        "Name" : "",
+        "Age" : "",
+        "Address" : "",
+        "Email" : "",
+        "Password" : ""
+    },
+    RecommendedApps : [],
+    OwnedApps : []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -13,24 +28,54 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loggedIn: true,
-                user_data: action.user_data
+                _id : action.user_data._id,
+                UserName : action.user_data.UserName,
+                SteamId : action.user_data.SteamId,
+                UserType : action.user_data.UserType,
+                FollowedCurators : action.user_data.FollowedCurators,
+                Followers : action.user_data.Followers,
+                CreatedCollections : action.user_data.CreatedCollections,
+                SavedCollections : action.user_data.SavedCollections,
+                PersonalInfo : action.user_data.PersonalInfo,
+                RecommendedApps : action.user_data.RecommendedApps,
+                OwnedApps : action.user_data.OwnedApps
             }
         case LOGOUT:
             return {
-                ...state,
-                loggedIn: false,
-                user_data: {},
-                steam_data: {}
+                loggedIn : false,
+                _id : "",
+                UserName : "",
+                SteamId : 0,
+                UserType : "Curator",
+                FollowedCurators : [],
+                Followers : [],
+                CreatedCollections : [],
+                SavedCollections : [],
+                PersonalInfo : {
+                    "Name" : "",
+                    "Age" : "",
+                    "Address" : "",
+                    "Email" : "",
+                    "Password" : ""
+                },
+                RecommendedApps : [],
+                OwnedApps : []
             }
         case UPDATE_USER_DATA:
             return {
                 ...state,
-                user_data : action.user_data
-            }
-        case UPDATE_STEAM_DATA:
-            return {
-                ...state,
-                steam_data : action.steam_data
+                loggedIn: true,
+                _id : action.user_data._id,
+                UserName : action.user_data.UserName,
+                SteamId : action.user_data.SteamId,
+                UserType : action.user_data.UserType,
+                FollowedCurators : action.user_data.FollowedCurators,
+                Followers : action.user_data.Followers,
+                CreatedCollections : action.user_data.CreatedCollections,
+                SavedCollections : action.user_data.SavedCollections,
+                PersonalInfo : action.user_data.PersonalInfo,
+                RecommendedApps : action.user_data.RecommendedApps,
+                OwnedApps : action.user_data.OwnedApps
             }
         default:
             return state;

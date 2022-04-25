@@ -11,7 +11,7 @@ const GameList = (props) => {
 
     return (
         <div>
-            <ul>
+            <ul className={"list-group"}>
                 {gamesArray.map(g => <li className={"list-group-item"} key={g}> <Game appId={g}/></li>)}
             </ul>
         </div>
