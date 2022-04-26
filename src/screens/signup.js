@@ -105,9 +105,9 @@ const Signup = () => {
                         <h4>Account Type:</h4>
                         <div className="form-check pt-2">
                             <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                                   value="Curator" defaultChecked={true} onChange={handleOptionChange}/>
+                                   value="User" defaultChecked={true} onChange={handleOptionChange}/>
                             <label className="form-check-label" htmlFor="exampleRadios1">
-                                <strong>Curator:</strong> I have exquisite taste in video games. I want to curate collections of games and share them with the world.
+                                <strong>User:</strong> I have exquisite taste in video games. I want to curate collections of games and share them with the world.
                             </label>
                         </div>
                         <div className="form-check pt-2">

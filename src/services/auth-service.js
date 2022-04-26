@@ -19,8 +19,9 @@ export const logout = async (user) => {
 }
 
 export const getUserById = async (id) => {
+    console.log(API_URL+'/getUser/' + id);
     const axiosResponse = await (api.get(API_URL+'/getUser/' + id));
-    return axiosResponse;
+    return axiosResponse.data;
 }
 
 export const profile = async () => {

@@ -10,12 +10,15 @@ const SteamSearch = () => {
     //Set state of input box to 'search'. Navigate to 'search/:search when button is pressed
     const navigate = useNavigate();
     const [search, setSearch] = useState('');
+    const [submitCount,setSubmitCount] = useState(0);
 
     const handleChange = (event) => {
         setSearch(event.target.value);
     }
     const handleSubmit = (e) => {
         e.preventDefault();
+        setGamesList([]);
+        setSubmitCount(submitCount + 1);
         navigate("/search/" + search);
     }
 
@@ -30,7 +33,7 @@ const SteamSearch = () => {
             fetchGamesList();
         }
 
-    },[params.query])
+    },[params.query,submitCount])
 
     //If there is no query in the URL, return the search box
     if(!params.query){

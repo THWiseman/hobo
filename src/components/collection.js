@@ -47,7 +47,7 @@ const Collection = (props) => {
 
     return (
         <div>
-            <a href="#" className="list-group-item list-group-item-action flex-column align-items-start pt-2">
+            <a href={"/collection/" + collectionId} className="list-group-item list-group-item-action flex-column align-items-start pt-2">
                 <div className="d-flex w-100 justify-content-between">
                     <h5 className="mb-1">{collection.Title}</h5>
                     <h5>{"by: "+collection.CreatorName}</h5>

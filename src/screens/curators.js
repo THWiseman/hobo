@@ -1,15 +1,19 @@
-import Curator from '../components/curator.js'
+import UserList from '../components/user-list'
 import * as service from '../services/auth-service.js'
 import {useState, useEffect} from "react";
 
 const Curators = () => {
     const[curatorArray,setCuratorArray] = useState([]);
+    const[curatorIdArray,setCuratorIdArray] = useState([]);
 
     useEffect(()=> {
         const fetchCurators = async () => {
             const array = await service.getAllCurators();
             console.log(array);
             setCuratorArray(array);
+            const tempArray = [];
+            array.map(c => tempArray.push(c._id));
+            setCuratorIdArray(tempArray);
         }
          fetchCurators();
 
@@ -17,9 +21,7 @@ const Curators = () => {
 
     return (
         <div>
-            <ul>
-                {curatorArray.map(u => <li className={"list-group-item"} key={u}> <Curator curator={u}/> </li>)}
-            </ul>
+            <UserList userIdArray={curatorIdArray}/>
         </div>
     )
 }

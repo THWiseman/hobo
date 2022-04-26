@@ -44,3 +44,14 @@ export const getCollectionTitle = async(collectionId) => {
     const response = await api.get(API_URL + '/collectionName/' + collectionId);
     return response.data;
 }
+
+export const addAppToCollection = async(appId,collectionId) => {
+    const body = {
+        "appId" : appId,
+        "collectionId" : collectionId
+    }
+    const response = await api.post(API_URL + '/collection/addApp',body);
+    return response.data;
+
+}
+

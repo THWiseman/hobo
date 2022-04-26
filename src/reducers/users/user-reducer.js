@@ -1,4 +1,4 @@
-import {LOGIN,LOGOUT,UPDATE_USER_DATA} from './actions'
+import {LOGIN,LOGOUT,UPDATE_USER_DATA, UPDATE_COLLECTIONS} from './actions'
 
 const initialState = {
     loggedIn : false,
@@ -18,7 +18,8 @@ const initialState = {
         "Password" : ""
     },
     RecommendedApps : [],
-    OwnedApps : []
+    OwnedApps : [],
+    Collections : []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -42,6 +43,7 @@ const userReducer = (state = initialState, action) => {
             }
         case LOGOUT:
             return {
+                ...state,
                 loggedIn : false,
                 _id : "",
                 UserName : "",
@@ -76,6 +78,11 @@ const userReducer = (state = initialState, action) => {
                 PersonalInfo : action.user_data.PersonalInfo,
                 RecommendedApps : action.user_data.RecommendedApps,
                 OwnedApps : action.user_data.OwnedApps
+            }
+        case UPDATE_COLLECTIONS:
+            return {
+                ...state,
+                Collections: action.collections
             }
         default:
             return state;

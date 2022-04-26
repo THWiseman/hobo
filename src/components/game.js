@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import * as service from '../services/steam-service.js'
+import * as collectionService from '../services/collection-service'
 import {useSelector,useDispatch} from 'react-redux'
 import {UPDATE_USER_DATA} from "../reducers/users/actions";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -7,7 +8,6 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Game = (props) => {
     const appId = props.appId;
-    //const imgURL = "http://media.steampowered.com/steamcommunity/public/images/apps/" + appId + "/" + imgIconUrl;
     const bannerURL = "https://steamcdn-a.akamaihd.net/steam/apps/" + appId + "/header.jpg";
 
     const dispatch = useDispatch();
@@ -19,7 +19,6 @@ const Game = (props) => {
 
     const[userRecommendsApp,setUserRecommendsApp] = useState(false);
 
-
     const recommendGame = async () => {
         service.recommendApp(user_data._id, appId);
         user_data.RecommendedApps.push(appId);
@@ -29,14 +28,25 @@ const Game = (props) => {
 
     useEffect( () => {
         const fetchAppInfo = async () => {
-            const responseFromServer = await(service.getAppInfo(appId));
+            const responseFromServer = await(service.getBasicAppInfo(appId));
             setAppInfo(responseFromServer);
         }
         fetchAppInfo();
         setUserRecommendsApp(user_data.RecommendedApps.includes(appId));
     },[user_data])
 
+
+    const getNameFromCollectionId = (collectionId) => {
+        try {
+            return user_data.Collections.find(element=>element._id===collectionId).Title;
+        } catch (e) {
+            return "";
+        }
+
+    }
+
     const handleSelect=(e)=>{
+        collectionService.addAppToCollection(appId, e);
         console.log(e);
     }
 
@@ -49,34 +59,30 @@ const Game = (props) => {
             onSelect={handleSelect}
             size={"sm"}
             variant={"info"}
+            disabled={!(user_data.UserType==="Curator")}
         >
-            <Dropdown.Item eventKey="option-1">option-1</Dropdown.Item>
-            <Dropdown.Item eventKey="option-2">option-2</Dropdown.Item>
-            <Dropdown.Item eventKey="option-3">option 3</Dropdown.Item>
+                {user_data.CreatedCollections.map(c => <Dropdown.Item key={c} eventKey={c}>{getNameFromCollectionId(c)}</Dropdown.Item>)}
         </DropdownButton>)
     }
 
 
     return (
+        <li className="list-group-item list-group-item-action flex-column align-items-start pt-2">
         <div className={"container"}>
             <div className={"row"}>
-                <div className={"col-3"}>
-            <img src={bannerURL} className={"img-fluid"}/>
+                <div className={"col"}>
+                    <a href={"/gameDetails/" + appId}>
+                    <img  src={bannerURL} className={"img-fluid"}/>
+                    </a>
                 </div>
-                <div className={"col-9 my-auto"}>{appInfo && appInfo.AppTitle}</div>
-            </div>
-            <div className={"row pt-2"}>
-                <div className={"col-4"}>
-            <button className={"btn btn-primary btn-sm"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
-                </div>
-                <div className={"col-4"}>
-                    {addToCollection()}
-                    </div>
-                <div className={"col-4"}>
-                    <button className={"btn btn-primary btn-sm"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
+                <div className={"col text-center"}><h3>{appInfo && appInfo.AppTitle}</h3></div>
+                <div className={"col"}>
+                    <button className={"btn btn-primary pe-2 btn-sm float-end"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
+                    <div className={"float-end"}>{addToCollection()} </div>
                 </div>
             </div>
         </div>
+        </li>
     );
 }
 

@@ -28,6 +28,12 @@ export const getUserBySteamId = async (userId) => {
     return response.data;
 }
 
+export const getBasicAppInfo = async (appId) => {
+    const url = STEAM_API + '/getBasicAppInfo/' + appId;
+    const response = await axios.get(url);
+    return response.data;
+}
+
 export const getAppInfo = async (appId) => {
     const url = STEAM_API + '/getAppInfo/' + appId;
     const response = await(axios.get(url));
