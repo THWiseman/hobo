@@ -8,6 +8,13 @@ export const findUser = async (userId) => {
     return data;
 }
 
+export const getRecentlyPlayedGames = async (steamId) => {
+    console.log(steamId);
+    const url = STEAM_API + '/getRecentGames/' + steamId;
+    const response = await axios.get(url);
+    return response.data;
+}
+
 export const getOwnedGames = async (userId) => {
     const url = STEAM_API + "/getOwnedGames/" + userId;
     const response = await axios.get(url);

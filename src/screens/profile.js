@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from 'react-redux'
 import CreateCollection from "../components/create-collection";
 import CollectionList from "../components/collection-list";
+import UserList from "../components/user-list";
 
 const Profile = () => {
 
@@ -23,6 +24,7 @@ const Profile = () => {
     }
 
     const clickSavedCollections = () => {
+        console.log(user_data);
         setDisplay("SavedCollections");
     }
 
@@ -32,6 +34,14 @@ const Profile = () => {
 
     const clickYourCollections = () => {
         setDisplay("YourCollections");
+    }
+
+    const clickCuratorsYouFollow = () => {
+        setDisplay("CuratorsYouFollow");
+    }
+
+    const clickFollowers = () => {
+        setDisplay("Followers");
     }
     const store = useStore();
 
@@ -117,6 +127,24 @@ const Profile = () => {
         )
     }
 
+    const curatorsYouFollow = () => {
+        return (
+            <div>
+                <h4 className={'mx-auto'}>Curators You Follow: </h4>
+                <UserList userIdArray={user_data.FollowedCurators}/>
+            </div>
+        )
+    }
+
+    const followers = () => {
+        return (
+            <div>
+                <h4 className={'mx-auto'}>Your Followers: </h4>
+                <UserList userIdArray={user_data.Followers}/>
+            </div>
+        )
+    }
+
     return(
         <div>
             <div className={"container"}>
@@ -127,10 +155,12 @@ const Profile = () => {
                 </div>
             </div>
             <div className="btn-group pb-4">
-                <a className={(display==="Recommend") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickRecommend}>Your Recommendations</a>
-                <a className={(display==="Owned") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickOwned}>Your Games</a>
-                <a className={(display==="SavedCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickSavedCollections}>Saved Collections</a>
-                <a className={(display==="YourCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickYourCollections}>Your Collections</a>
+                <a className={(display==="Owned") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickOwned}>Games You Own</a>
+                <a className={(display==="Recommend") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickRecommend}>Games You Recommend</a>
+                <a className={(display==="SavedCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickSavedCollections}>Collections You Like</a>
+                <a className={(display==="YourCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickYourCollections}>Collections You Made</a>
+                <a className={(display==="CuratorsYouFollow") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickCuratorsYouFollow}>Curators You Follow</a>
+                <a className={(display==="Followers") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickFollowers}>Users Following You</a>
                 <a className={(display==="PersonalInfo") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickPersonalInfo}>Personal Info</a>
             </div>
 
@@ -138,6 +168,8 @@ const Profile = () => {
             {display==="Owned" && gamesYouOwn()}
             {display==="SavedCollections" && savedCollections()}
             {display==="YourCollections" && yourCollections()}
+            {display==="CuratorsYouFollow" && curatorsYouFollow()}
+            {display==="Followers" && followers()}
     </div>)
 }
 export default Profile;

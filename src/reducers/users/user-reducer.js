@@ -25,7 +25,6 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
-            console.log("login from reducer");
             return {
                 ...state,
                 loggedIn: true,

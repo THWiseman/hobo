@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {useDispatch} from 'react-redux'
-import {useNavigate} from "react-router-dom";
+import {useNavigate,Link} from "react-router-dom";
 import * as service from "../services/auth-service.js"
 
 const Signin = () => {
@@ -23,7 +23,7 @@ const Signin = () => {
             <h1>Sign In</h1>
             <input ref={emailRef} placeholder="gfreeman@blackmesa.com" className={"form-control"} type={"email"} />
             <input ref={passwordRef} placeholder={"password"} className={"form-control"} type={"password"}/>
-            <button onClick={signin} className={"btn btn-primary"}>Sign In</button>
+            <button onClick={signin} className={"btn btn-primary"}>Sign In</button>  <Link  className={"btn btn-info"} to={"/signup"}>(sign up instead)</Link>
         </div>
     );
 };

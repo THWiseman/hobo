@@ -59,7 +59,6 @@ const UserDetails = () => {
                 <div className={"row"}>
                     <div className={"col"}>
                         <h4>Created Collections</h4>
-                        {console.log(userObject)}
                         <CollectionList collectionArray={userObject.CreatedCollections}/>
                     </div>
                     <div className={"col"}>
@@ -81,7 +80,6 @@ const UserDetails = () => {
                 <div className={"row"}>
                     <div className={"col"}>
                         <h4>Followers</h4>
-                        {console.log(userObject)}
                         <UserList usersArray={userObject.Followers}/>
                     </div>
                     <div className={"col"}>
