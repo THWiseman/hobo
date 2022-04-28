@@ -33,14 +33,22 @@ const User = (props) => {
     },[])
 
     return (
-        <a href={"/userDetails/" + userId} className="list-group-item list-group-item-action flex-column align-items-start pt-2">
-        <div>
-            <h3>{userObject.UserName}</h3>
-            Followers: {userObject.Followers.length}
-            Collections: {userObject.CreatedCollections.length}
-            Recommendations: {userObject.RecommendedApps.length}
+
+    <a href={"/userDetails/" + userId} className={"text-decoration-none p-2"}>
+    <div className="card">
+        <div className="card-header text-dark">
+            {userObject.UserType}
         </div>
-        </a>
+        <div className="card-body">
+            <h5 className="card-title">{userObject.UserName}</h5>
+            <ul className="list-group card-text">
+                <li className="list-group-item bg-light ">Followers: {userObject.Followers.length}</li>
+                <li className="list-group-item bg-light">Collections: {userObject.CreatedCollections.length}</li>
+                <li className="list-group-item bg-light">Recommendations: {userObject.RecommendedApps.length}</li>
+            </ul>
+        </div>
+    </div>
+    </a>
     );
 };
 

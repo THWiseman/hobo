@@ -8,6 +8,22 @@ export const signup = async (user) => {
     return response.data
 }
 
+export const updateUserPersonalInfo = async(user) => {
+    const response = await api.post(API_URL + '/user', user);
+    console.log(response.data);
+    return response.data;
+}
+
+export const followCurator = async (follower, followedCurator) => {
+    const body = {
+        follower : follower,
+        followedCurator : followedCurator
+    }
+    console.log(body);
+    const userFollowing = await api.put(API_URL + '/follow',  body);
+    return userFollowing.data;
+}
+
 export const login = async (email,password) => {
     const response = await api.post(API_URL + '/login', {email: email, password: password});
     return response.data
@@ -19,7 +35,6 @@ export const logout = async (user) => {
 }
 
 export const getUserById = async (id) => {
-    console.log(API_URL+'/getUser/' + id);
     const axiosResponse = await (api.get(API_URL+'/getUser/' + id));
     return axiosResponse.data;
 }

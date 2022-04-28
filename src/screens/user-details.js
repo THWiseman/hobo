@@ -1,15 +1,19 @@
 import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {Link, useParams} from "react-router-dom";
+import {useDispatch, useStore} from "react-redux";
 import * as service from '../services/auth-service'
 import GameList from "../components/game-list";
 import CollectionList from "../components/collection-list";
 import UserList from "../components/user-list";
+import {UPDATE_USER_DATA} from "../reducers/users/actions";
 
 const UserDetails = () => {
 
     const params = useParams();
     const user_id = params.userId;
+
+    const loggedInUserData = useStore().getState();
+    const dispatch = useDispatch();
 
     const[userObject,setUserObject] = useState({
         "UserName" : "",
@@ -55,6 +59,7 @@ const UserDetails = () => {
 
     const collections = () => {
         return (
+
             <div className={"container"}>
                 <div className={"row"}>
                     <div className={"col"}>
@@ -80,11 +85,11 @@ const UserDetails = () => {
                 <div className={"row"}>
                     <div className={"col"}>
                         <h4>Followers</h4>
-                        <UserList usersArray={userObject.Followers}/>
+                        <UserList userIdArray={userObject.Followers}/>
                     </div>
                     <div className={"col"}>
                         <h4>Followed Curators</h4>
-                        <UserList usersArray={userObject.FollowedCurators}/>
+                        <UserList userIdArray={userObject.FollowedCurators}/>
                     </div>
                 </div>
             </div>
@@ -92,14 +97,27 @@ const UserDetails = () => {
     }
 
 
-
+const followCurator = async () => {
+    const loggedInUser = await service.followCurator(loggedInUserData._id, userObject._id);
+    console.log(loggedInUser);
+    dispatch({type:UPDATE_USER_DATA,loggedInUser});
+}
 
     return (
         <div>
+            <div className="card">
+                <div className="card-header">
+                    {userObject.UserType}
+                </div>
+                <div className="card-body">
+                    <h5 className="card-title">{userObject.UserName}</h5>
+                    <button onClick={followCurator} className={"btn btn-primary"} disabled={!(userObject.UserType==="Curator" && loggedInUserData.UserType !== "Lurker" && !loggedInUserData.FollowedCurators.includes(userObject._id))}> Follow Curator</button>
+                </div>
+            </div>
             <div className="btn-group pb-4">
-                <a className={(display==="RecommendedApps") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickRecommendedApps}>Recommended Apps</a>
-                <a className={(display==="Collections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickCollections}>Collections</a>
-                <a className={(display==="FollowersAndFollowing") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickFollowersAndFollowing}>Followers and Following</a>
+                <button className={(display==="RecommendedApps") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickRecommendedApps}>Recommended Apps</button>
+                <button className={(display==="Collections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickCollections}>Collections</button>
+                <button className={(display==="FollowersAndFollowing") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickFollowersAndFollowing}>Followers and Following</button>
             </div>
             {display==="RecommendedApps" && recommendedApps()}
             {display==="Collections" && collections()}

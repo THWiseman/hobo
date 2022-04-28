@@ -1,16 +1,18 @@
 import React, {useState,useEffect} from 'react'
 import * as service from '../services/steam-service.js'
+import * as authService from '../services/auth-service.js'
+import * as collectionService from '../services/collection-service'
 import {useParams} from "react-router-dom";
-import {UPDATE_USER_DATA} from "../reducers/users/actions";
+import {UPDATE_COLLECTIONS, UPDATE_USER_DATA} from "../reducers/users/actions";
 import {useDispatch, useSelector} from "react-redux";
 import CollectionList from "../components/collection-list";
 import UserList from "../components/user-list";
+import AddToCollectionDropdown from "../components/add-to-collection-dropdown";
 
 const GameDetails = () => {
     //URL Parameters
     const params = useParams();
     const dispatch = useDispatch();
-
     const appId = params.appId;
     const bannerURL = "https://steamcdn-a.akamaihd.net/steam/apps/" + appId + "/header.jpg";
 
@@ -25,9 +27,26 @@ const GameDetails = () => {
     }
 
     const[userRecommendsApp,setUserRecommendsApp] = useState(false);
-    const user_data = useSelector((state) => {
-        return state;
+    const[user_data,setUserData] = useState({
+        "_id" : "",
+        "UserName" : "",
+        "SteamId" : 0,
+        "UserType" : "Curator",
+        "FollowedCurators" : [],
+        "Followers" : [],
+        "CreatedCollections" : [],
+        "SavedCollections" : [],
+        "PersonalInfo" : {
+            "Name" : "",
+            "Age" : "",
+            "Address" : "",
+            "Email" : "",
+            "Password" : ""
+        },
+        "RecommendedApps" : [],
+        "OwnedApps" : []
     });
+
     const recommendGame = async () => {
         service.recommendApp(user_data._id, appId);
         user_data.RecommendedApps.push(appId);
@@ -47,12 +66,30 @@ const GameDetails = () => {
 
     useEffect( () => {
         const fetchAppInfo = async () => {
+            console.log("FetchingAppData", appId);
             const responseFromServer = await(service.getAppInfo(appId));
-            console.log(responseFromServer);
             setAppInfo(responseFromServer);
         }
+        const getAllCollections = async () => {
+            const allCollections =  await collectionService.getAllCollections();
+            dispatch({type:UPDATE_COLLECTIONS, collections:allCollections});
+        }
+
+        const fetchProfileData = async() => {
+            const profile = await authService.profile();
+            if(profile){
+                setUserData(profile);
+                dispatch({"type":"LOGIN", "user_data":profile });
+                return true;
+            }
+            return false;
+        }
+        fetchProfileData();
+        getAllCollections();
         fetchAppInfo();
+
     },[])
+
 
     return (
         <div className={"container"}>
@@ -63,9 +100,11 @@ const GameDetails = () => {
                 <div className={"col-6 my-auto"}>
                     <h4>{appInfo && appInfo.AppTitle}</h4>
                     <div>Price: {appInfo.Price}</div>
+
                     <div><a href={"https://store.steampowered.com/app/" + appId}>Steam Store Page</a></div>
                     <div>Boosts: {appInfo.AnonymousRecommendations}</div>
                     <button className={"btn btn-primary pe-2 btn-sm float-end"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
+                    <AddToCollectionDropdown userId={user_data._id} appId={appId}/>
                 </div>
             </div>
             <div className={"row"}>

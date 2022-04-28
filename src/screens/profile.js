@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux'
 import CreateCollection from "../components/create-collection";
 import CollectionList from "../components/collection-list";
 import UserList from "../components/user-list";
+import PersonalDetails from "../components/personal-details";
 
 const Profile = () => {
 
@@ -170,6 +171,7 @@ const Profile = () => {
             {display==="YourCollections" && yourCollections()}
             {display==="CuratorsYouFollow" && curatorsYouFollow()}
             {display==="Followers" && followers()}
+            {display==="PersonalInfo" && <PersonalDetails/>}
     </div>)
 }
 export default Profile;
