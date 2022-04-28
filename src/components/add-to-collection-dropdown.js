@@ -2,54 +2,32 @@ import React, {useState, useEffect} from 'react';
 import * as collectionService from "../services/collection-service";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
-import * as service from "../services/auth-service";
+import {useStore} from "react-redux";
 
 
 const AddToCollectionDropdown = (props) => {
     const appId = props.appId;
-    const userId = props.userId;
 
-    const[userObject,setUserObject] = useState({
-        "_id" : "",
-        "UserName" : "",
-        "SteamId" : 0,
-        "UserType" : "Curator",
-        "FollowedCurators" : [],
-        "Followers" : [],
-        "CreatedCollections" : [],
-        "SavedCollections" : [],
-        "PersonalInfo" : {
-            "Name" : "",
-            "Age" : "",
-            "Address" : "",
-            "Email" : "",
-            "Password" : ""
-        },
-        "RecommendedApps" : [],
-        "OwnedApps" : []
-    });
+    const user_data = useStore().getState();
+    const[collectionObjects,setCollectionObjects] = useState([]);
 
     useEffect( () => {
-        const fetchUserData = async () => {
-            console.log("UserID: ", userId);
-            console.log("AppId : ", appId);
-            const userData = await service.getUserById(userId);
-            console.log(userData);
-            setUserObject(userData);
+        const fetchCollectionObjects = async () => {
+            const collectionsArray = await collectionService.getAllCollections();
+            console.log("Retrieved Collections: ", collectionsArray);
+            setCollectionObjects(collectionsArray);
         }
-
-        fetchUserData();
-    },[userId])
-
-
+        fetchCollectionObjects();
+    }, [])
 
     const getNameFromCollectionId = (collectionId) => {
-        try {
-            return userObject.Collections.find(element=>element._id===collectionId).Title;
-        } catch (e) {
-            return "";
+        for(let i = 0; i < collectionObjects.length; i++) {
+            if(collectionObjects[i]._id === collectionId) {
+                console.log(collectionObjects[i].Title);
+                return collectionObjects[i].Title;
+            }
         }
-
+        return "";
     }
 
     const handleSelect=(e)=>{
@@ -65,10 +43,10 @@ const AddToCollectionDropdown = (props) => {
             onSelect={handleSelect}
             size={"sm"}
             variant={"info"}
-            disabled={!(userObject.UserType==="Curator")}
+            disabled={!(user_data.UserType==="Curator")}
         >
-            {userObject.CreatedCollections.map(c => <Dropdown.Item key={c} eventKey={c}>{getNameFromCollectionId(c)}</Dropdown.Item>)}
-        </DropdownButton>)
+            {user_data.CreatedCollections.map(c => <Dropdown.Item key={c} eventKey={c}>{getNameFromCollectionId(c)}</Dropdown.Item>)}
+        </DropdownButton>
         </div>
     )
 };

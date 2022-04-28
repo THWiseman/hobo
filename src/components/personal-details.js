@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useStore} from "react-redux";
 import * as service from '../services/auth-service'
 import {UPDATE_USER_DATA} from "../reducers/users/actions";
@@ -34,9 +34,6 @@ const PersonalDetails = () => {
         setAddress(event.target.value);
     }
 
-    const[mode,setMode] = useState("Display");
-    const clickDisplay = () => (setMode("Display"));
-    const clickEdit = () => (setMode("Edit"));
 
     const handleSave = async () => {
         console.log("HandleSave");

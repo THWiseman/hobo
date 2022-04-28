@@ -33,7 +33,7 @@ const Game = (props) => {
         }
         fetchAppInfo();
         setUserRecommendsApp(user_data.RecommendedApps.includes(appId));
-    },[user_data])
+    },[user_data,appId])
 
 
     const getNameFromCollectionId = (collectionId) => {
@@ -72,7 +72,7 @@ const Game = (props) => {
             <div className={"row"}>
                 <div className={"col"}>
                     <a href={"/gameDetails/" + appId}>
-                    <img  src={bannerURL} className={"img-fluid"}/>
+                    <img  src={bannerURL} className={"img-fluid"} alt={"Banner Img for app: " + appId.toString()}/>
                     </a>
                 </div>
                 <div className={"col text-center"}><h3>{appInfo && appInfo.AppTitle}</h3></div>

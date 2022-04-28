@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useDispatch, useStore} from "react-redux";
 import * as service from '../services/auth-service'
 import GameList from "../components/game-list";
@@ -41,7 +41,7 @@ const UserDetails = () => {
         }
         fetchUserData();
 
-    },[])
+    },[user_id])
 
     const[display,setCurrentDisplay] = useState("RecommendedApps");
 

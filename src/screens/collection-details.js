@@ -3,7 +3,7 @@ import GameList from '../components/game-list.js'
 import * as service from '../services/collection-service.js'
 import {useParams,Link} from "react-router-dom";
 import UserList from "../components/user-list";
-import {useDispatch, useStore} from "react-redux";
+import {useStore} from "react-redux";
 
 
 const CollectionDetails = () => {

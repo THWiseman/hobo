@@ -25,7 +25,7 @@ const GameList = (props) => {
         }
         fetchProfileData();
         getAllCollections();
-    },[])
+    })
 
     if(!gamesArray){
         return (<div>

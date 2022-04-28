@@ -29,6 +29,14 @@ const CreateCollection = () => {
         dispatch({"type":UPDATE_USER_DATA, "user_data":user_data});
     }
 
+    if(user_data.UserType!=="Curator"){
+        return(
+            <div>
+                <h4>Only Curators can make new collections.</h4>
+            </div>
+        )
+    }
+
     return (
         <div>
             <form>

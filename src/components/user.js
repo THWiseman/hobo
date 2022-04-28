@@ -30,7 +30,7 @@ const User = (props) => {
             setUserObject(userData);
         }
         fetchUserData();
-    },[])
+    })
 
     return (
 

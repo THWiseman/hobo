@@ -29,7 +29,7 @@ const Collection = (props) => {
         fetchCollection();
         setUserSavedCollection(user_data.SavedCollections.includes(collectionId));
 
-    },[])
+    },[user_data.SavedCollections, collectionId])
 
     const saveCollection = async () => {
         const updatedUser = await service.saveCollection(user_data._id, collectionId);
@@ -38,6 +38,7 @@ const Collection = (props) => {
     }
 
     const[boosts,setBoosts] = useState(0);
+
     const boostCollection = async () => {
         service.boostCollection(collectionId);
         setBoosts(boosts+1);
@@ -45,23 +46,28 @@ const Collection = (props) => {
 
 
 
+
     return (
-        <div>
-            <a href={"/collection/" + collectionId} className="list-group-item list-group-item-action flex-column align-items-start pt-2">
+        <div className={"pt-2"}>
+            <a href={"/collection/" + collectionId} className="list-group-item list-group-item-action flex-column align-items-start pt-2 bg-info">
                 <div className="d-flex w-100 justify-content-between">
                     <h5 className="mb-1">{collection.Title}</h5>
                     <h5>{"by: "+collection.CreatorName}</h5>
                 </div>
+            </a>
+            <div className={"list-group-item flex-column align-items-start bg-light"}>
                 <p className="mb-1">Games: {collection.Apps.length}</p>
                 <div className="d-flex w-100 justify-content-between">
                 <p className="mb-1">Saves: {userSavedCollection? collection.Followers.length+1 : collection.Followers.length}</p>
-                <button className={"btn btn-primary btn-sm"} onClick={saveCollection} disabled={userSavedCollection}>{!userSavedCollection && "Save"}{userSavedCollection && "Saved"}</button>
+                    {<button className={"btn btn-primary btn-sm"} onClick={saveCollection} disabled={userSavedCollection}>{!userSavedCollection && "Save"}{userSavedCollection && "Saved"}</button>
+                    }
                 </div>
                 <div className="d-flex w-100 justify-content-between">
                 <p className="mb-1">Boosts: {collection.AnonymousRecommendations + boosts}</p>
-                <button className={"btn btn-info btn-sm"} onClick={boostCollection}>Boost!</button>
+                    {<button className={"btn btn-info btn-sm"} onClick={boostCollection}>Boost!</button>
+                    }
                 </div>
-            </a>
+        </div>
         </div>
     );
 };

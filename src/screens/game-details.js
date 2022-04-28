@@ -4,7 +4,7 @@ import * as authService from '../services/auth-service.js'
 import * as collectionService from '../services/collection-service'
 import {useParams} from "react-router-dom";
 import {UPDATE_COLLECTIONS, UPDATE_USER_DATA} from "../reducers/users/actions";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import CollectionList from "../components/collection-list";
 import UserList from "../components/user-list";
 import AddToCollectionDropdown from "../components/add-to-collection-dropdown";
@@ -66,7 +66,6 @@ const GameDetails = () => {
 
     useEffect( () => {
         const fetchAppInfo = async () => {
-            console.log("FetchingAppData", appId);
             const responseFromServer = await(service.getAppInfo(appId));
             setAppInfo(responseFromServer);
         }
@@ -87,15 +86,14 @@ const GameDetails = () => {
         fetchProfileData();
         getAllCollections();
         fetchAppInfo();
-
-    },[])
+    })
 
 
     return (
         <div className={"container"}>
             <div className={"row"}>
                 <div className={"col-6"}>
-                    <img src={bannerURL} className={"img-fluid"}/>
+                    <img src={bannerURL} alt={"banner for: " + appId.toString()} className={"img-fluid"}/>
                 </div>
                 <div className={"col-6 my-auto"}>
                     <h4>{appInfo && appInfo.AppTitle}</h4>
@@ -103,7 +101,7 @@ const GameDetails = () => {
 
                     <div><a href={"https://store.steampowered.com/app/" + appId}>Steam Store Page</a></div>
                     <div>Boosts: {appInfo.AnonymousRecommendations}</div>
-                    <button className={"btn btn-primary pe-2 btn-sm float-end"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
+                    <button className={"btn btn-primary pe-2 btn-sm"} onClick={recommendGame} disabled={userRecommendsApp}>{!userRecommendsApp && "Recommend"}{userRecommendsApp && "Recommended"}</button>
                     <AddToCollectionDropdown userId={user_data._id} appId={appId}/>
                 </div>
             </div>

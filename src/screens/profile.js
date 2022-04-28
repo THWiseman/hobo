@@ -1,4 +1,4 @@
-import React, {useEffect,useState,useRef} from "react";
+import React, {useEffect,useState} from "react";
 import GameList from '../components/game-list'
 import {Link} from "react-router-dom";
 import * as service from '../services/auth-service.js'
@@ -70,11 +70,11 @@ const Profile = () => {
         }
 
         const userLoggedIn = fetchProfileData();
-        if(!userLoggedIn){
+        if(!userLoggedIn || user_data.UserName===""){
             navigate("/signin");
         }
 
-    },[])
+    })
 
     const gamesYouOwn = () => {
         return(
@@ -146,6 +146,13 @@ const Profile = () => {
         )
     }
 
+    const lurkerPage = () => {
+        return(
+            <h4>Lurker users don't have a profile, and can't create or save collections. Make a different account type to have a persistent profile.</h4>
+            )
+
+    }
+
     return(
         <div>
             <div className={"container"}>
@@ -155,23 +162,24 @@ const Profile = () => {
                         </h1>
                 </div>
             </div>
+            {user_data.UserType!=="Lurker" &&
             <div className="btn-group pb-4">
-                <a className={(display==="Owned") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickOwned}>Games You Own</a>
-                <a className={(display==="Recommend") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickRecommend}>Games You Recommend</a>
-                <a className={(display==="SavedCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickSavedCollections}>Collections You Like</a>
-                <a className={(display==="YourCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickYourCollections}>Collections You Made</a>
-                <a className={(display==="CuratorsYouFollow") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickCuratorsYouFollow}>Curators You Follow</a>
-                <a className={(display==="Followers") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickFollowers}>Users Following You</a>
-                <a className={(display==="PersonalInfo") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickPersonalInfo}>Personal Info</a>
-            </div>
-
-            {display==="Recommend" && gamesYouRecommend()}
-            {display==="Owned" && gamesYouOwn()}
-            {display==="SavedCollections" && savedCollections()}
-            {display==="YourCollections" && yourCollections()}
-            {display==="CuratorsYouFollow" && curatorsYouFollow()}
-            {display==="Followers" && followers()}
-            {display==="PersonalInfo" && <PersonalDetails/>}
+                <button className={(display==="Owned") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickOwned}>Games You Own</button>
+                <button className={(display==="Recommend") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickRecommend}>Games You Recommend</button>
+                <button className={(display==="SavedCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickSavedCollections}>Collections You Like</button>
+                <button className={(display==="YourCollections") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickYourCollections}>Collections You Made</button>
+                <button className={(display==="CuratorsYouFollow") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickCuratorsYouFollow}>Curators You Follow</button>
+                <button className={(display==="Followers") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickFollowers}>Users Following You</button>
+                <button className={(display==="PersonalInfo") ? "btn btn-primary active" : "btn btn-primary"} aria-current="page" onClick={clickPersonalInfo}>Personal Info</button>
+            </div>}
+            {user_data.UserType==="Lurker" && lurkerPage()}
+            {display==="Recommend" && user_data.UserType!=="Lurker" && gamesYouRecommend()}
+            {display==="Owned" && user_data.UserType!=="Lurker" && gamesYouOwn()}
+            {display==="SavedCollections" && user_data.UserType!=="Lurker" && savedCollections()}
+            {display==="YourCollections" && user_data.UserType!=="Lurker" && yourCollections()}
+            {display==="CuratorsYouFollow" && user_data.UserType!=="Lurker" && curatorsYouFollow()}
+            {display==="Followers" && user_data.UserType!=="Lurker" && followers()}
+            {display==="PersonalInfo" && user_data.UserType!=="Lurker" && <PersonalDetails/>}
     </div>)
 }
 export default Profile;

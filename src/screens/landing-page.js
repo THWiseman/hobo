@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import Signup from "./signup";
 import Signin from './signin'
 import * as service from '../services/steam-service.js'
 import GameList from "../components/game-list";
@@ -30,6 +29,7 @@ const LandingPage = () => {
                     <Signin/>
                 </div>
                 <div className={"col"}>
+                    <h2>Games the Site Creator has played recently</h2>
                     <GameList gamesArray={gameArray}/>
                 </div>
             </div>
